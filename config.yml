@@ -2,3 +2,28 @@ logging:
   level: INFO
   loggers:
     org.oiler.ad.server: DEBUG
+
+database:
+  # the name of your JDBC driver
+  driverClass: com.mysql.jdbc.Driver
+  # the username
+  user: svc.adexchange
+  # the password
+  password:
+  # the JDBC URL
+  url: jdbc:mysql://localhost:3306/ads
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+    hibernate.dialect: org.hibernate.dialect.MySQLDialect
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* MyApplication Health Check */ SELECT 1"
+  # the minimum number of connections to keep open
+  minSize: 2
+  # the maximum number of connections to keep open
+  maxSize: 10
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+
