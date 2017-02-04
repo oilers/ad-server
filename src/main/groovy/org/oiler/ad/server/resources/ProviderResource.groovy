@@ -32,8 +32,20 @@ class ProviderResource {
 
     @GET
     @UnitOfWork
-    public Collection<Provider> getAdSizes() {
-        return providerService.providers.collect{it.toModel()}
+    public Collection<ProviderModel> getProviders(
+            @QueryParam("width") Integer width,
+            @QueryParam("height") Integer height, @QueryParam("userId") Integer userId) {
+        def results
+        if (width && height) {
+            if (userId) {
+                results = providerService.getProviderBySizeAndUser(width, height, userId)
+            } else {
+                results = providerService.getProviderBySize(width, height).collect { it.toModel() }
+            }
+        } else {
+            results = providerService.providers.collect { it.toModel() }
+        }
+        return results
     }
 
     @POST

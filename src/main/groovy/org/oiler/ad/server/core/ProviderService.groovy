@@ -1,5 +1,6 @@
 package org.oiler.ad.server.core
 
+import org.oiler.ad.server.api.ProviderModel
 import org.oiler.ad.server.entities.*
 import org.oiler.ad.server.db.ProviderDAO
 
@@ -29,6 +30,14 @@ class ProviderService {
 
     Collection<Provider> getProviders(){
         return providerDAO.findAll()
+    }
+
+    Collection<Provider> getProviderBySize(int width, int height){
+        return providerDAO.findBySize(width, height)
+    }
+
+    Collection<ProviderModel> getProviderBySizeAndUser(int width, int height, int userId){
+        return providerDAO.findBySizeAndUser(width, height, userId)
     }
 
 }
