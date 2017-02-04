@@ -17,4 +17,8 @@ class AdSizeService {
         return adSizeDAO.save(adSize)
     }
 
+    Collection<AdSize> getAdSizes(){
+        return adSizeDAO.findAll()
+    }
+
 }

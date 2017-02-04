@@ -25,6 +25,12 @@ class AdSizeResource {
         return adSizeService.getAdSize(adSizeId).toModel()
     }
 
+    @GET
+    @UnitOfWork
+    public Collection<AdSizeModel> getAdSizes() {
+        return adSizeService.adSizes.collect{it.toModel()}
+    }
+
     @POST
     @Path("{adSizeId}")
     @UnitOfWork

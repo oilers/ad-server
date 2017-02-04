@@ -27,4 +27,7 @@ class UserService {
         return saveUser(user)
     }
 
+    Collection<User> getUsers() {
+        return userDAO.findAll()
+    }
 }

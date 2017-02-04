@@ -24,4 +24,8 @@ class AdSizeDAO extends AbstractDAO<AdSize> {
     public AdSize save(AdSize user) {
         return persist(user)
     }
+
+    public Collection<AdSize> findAll() {
+        return list(namedQuery("org.oiler.ad.server.entities.AdSize.findAll"))
+    }
 }

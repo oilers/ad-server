@@ -27,4 +27,8 @@ class ProviderService {
         return saveProvider(provider)
     }
 
+    Collection<Provider> getProviders(){
+        return providerDAO.findAll()
+    }
+
 }

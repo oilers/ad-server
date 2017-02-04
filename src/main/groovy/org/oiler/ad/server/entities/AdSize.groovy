@@ -9,6 +9,7 @@ import javax.persistence.*
  */
 @Entity
 @Table(name = "ad_size")
+@NamedQueries([@NamedQuery(name = "org.oiler.ad.server.entities.AdSize.findAll", query = "SELECT adSize from AdSize adSize")])
 class AdSize {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

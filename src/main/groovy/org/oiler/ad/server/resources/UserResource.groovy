@@ -29,6 +29,12 @@ class UserResource {
         return userService.getUser(userId).toModel()
     }
 
+    @GET
+    @UnitOfWork
+    public Collection<UserModel> getUsers() {
+        return userService.users.collect{it.toModel()}
+    }
+
     @POST
     @Path("{userId}")
     @UnitOfWork

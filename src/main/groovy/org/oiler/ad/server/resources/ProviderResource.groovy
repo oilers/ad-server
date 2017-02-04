@@ -29,6 +29,13 @@ class ProviderResource {
         return providerService.getProvider(providerId).toModel()
     }
 
+
+    @GET
+    @UnitOfWork
+    public Collection<Provider> getAdSizes() {
+        return providerService.providers.collect{it.toModel()}
+    }
+
     @POST
     @Path("{providerId}")
     @UnitOfWork
@@ -53,7 +60,7 @@ class ProviderResource {
     }
 
     @POST
-    @Path("{providerId}/provider/{userId}")
+    @Path("{providerId}/user/{userId}")
     @UnitOfWork
     public ProviderModel associateProvider(@PathParam("providerId") int providerId, @PathParam("userId") int userId) {
         def user = userService.getUser(userId)

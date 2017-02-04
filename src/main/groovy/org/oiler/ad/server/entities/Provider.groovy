@@ -1,5 +1,6 @@
 package org.oiler.ad.server.entities
 
+import org.eclipse.jetty.util.annotation.Name
 import org.oiler.ad.server.api.ProviderModel
 
 import javax.persistence.*
@@ -8,6 +9,9 @@ import javax.persistence.*
  * Created by Kodi on 2/4/2017.
  */
 @Entity
+@NamedQueries([@NamedQuery(name = "org.oiler.ad.server.entities.Provider.findAll", query = "SELECT provider from Provider provider"),
+//@NamedQuery(name = "org.oiler.ad.server.entities.Provider.findByUserAndSize", query = "select provider from ")
+])
 class Provider {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

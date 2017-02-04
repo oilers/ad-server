@@ -24,4 +24,8 @@ class UserDAO extends AbstractDAO<User> {
     public User save(User user) {
         return persist(user)
     }
+
+    public Collection<User> findAll(){
+        return list(namedQuery("org.oiler.ad.server.entities.User.findAll"))
+    }
 }

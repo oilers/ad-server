@@ -24,4 +24,8 @@ class ProviderDAO extends AbstractDAO<Provider> {
     public Provider save(Provider provider) {
         return persist(provider)
     }
+
+    public Collection<Provider> findAll(){
+        return list(namedQuery("org.oiler.ad.server.entities.Provider.findAll"))
+    }
 }
