@@ -1,0 +1,24 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+group = 'org.oiler.ad.server'
+version = '1.0-SNAPSHOT'
+
+description = """adServer"""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+
+
+repositories {
+        
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    compile group: 'io.dropwizard', name: 'dropwizard-core', version:'1.0.6'
+    compile 'org.codehaus.groovy:groovy:2.4.8'
+}
