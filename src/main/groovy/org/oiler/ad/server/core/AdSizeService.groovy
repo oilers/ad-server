@@ -7,7 +7,7 @@ import org.oiler.ad.server.db.AdSizeDAO
  * Created by Kodi on 2/4/2017.
  */
 class AdSizeService {
-    AdSizeDAO userDAO
+    AdSizeDAO adSizeDAO
 
     AdSize getAdSize(int id) {
         return adSizeDAO.findById(id)

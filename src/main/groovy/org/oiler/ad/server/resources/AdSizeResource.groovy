@@ -1,6 +1,7 @@
 package org.oiler.ad.server.resources
 
 import io.dropwizard.hibernate.UnitOfWork
+import org.oiler.ad.server.api.AdSizeModel
 import org.oiler.ad.server.entities.AdSize
 import org.oiler.ad.server.core.AdSizeService
 
@@ -20,16 +21,16 @@ class AdSizeResource {
     @GET
     @Path("{adSizeId}")
     @UnitOfWork
-    public AdSize getAdSize(@PathParam("adSizeId") int adSizeId) {
-        return adSizeService.getAdSize(adSizeId)
+    public AdSizeModel getAdSize(@PathParam("adSizeId") int adSizeId) {
+        return adSizeService.getAdSize(adSizeId).toModel()
     }
 
     @POST
     @Path("{adSizeId}")
     @UnitOfWork
-    public AdSize updateAdSize(@PathParam("adSizeId") int adSizeId, AdSize adSize) {
+    public AdSizeModel updateAdSize(@PathParam("adSizeId") int adSizeId, AdSize adSize) {
         if (adSizeId == adSize.adSizeId) {
-            return adSizeService.saveAdSize(adSize)
+            return adSizeService.saveAdSize(adSize).toModel()
         } else {
             throw new WebApplicationException(
                     Response.status(HttpURLConnection.HTTP_BAD_REQUEST)
@@ -39,8 +40,8 @@ class AdSizeResource {
 
     @PUT
     @UnitOfWork
-    public AdSize createAdSize(AdSize adSize) {
-        return adSizeService.saveAdSize(adSize)
+    public AdSizeModel createAdSize(AdSize adSize) {
+        return adSizeService.saveAdSize(adSize).toModel()
     }
 
 }

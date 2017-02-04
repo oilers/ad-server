@@ -1,10 +1,11 @@
 package org.oiler.ad.server.resources
 
 import io.dropwizard.hibernate.UnitOfWork
-import org.oiler.ad.server.entities.User
+import org.oiler.ad.server.api.UserModel
 import org.oiler.ad.server.core.AdSizeService
 import org.oiler.ad.server.core.ProviderService
 import org.oiler.ad.server.core.UserService
+import org.oiler.ad.server.entities.User
 
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
@@ -24,16 +25,16 @@ class UserResource {
     @GET
     @Path("{userId}")
     @UnitOfWork
-    public User getUser(@PathParam("userId") int userId) {
-        return userService.getUser(userId)
+    public UserModel getUser(@PathParam("userId") int userId) {
+        return userService.getUser(userId).toModel()
     }
 
     @POST
     @Path("{userId}")
     @UnitOfWork
-    public User updateUser(@PathParam("userId") int userId, User user) {
+    public UserModel updateUser(@PathParam("userId") int userId, User user) {
         if (userId == user.userId) {
-            return userService.saveUser(user)
+            return userService.saveUser(user).toModel()
         } else {
             throw new WebApplicationException(
                     Response.status(HttpURLConnection.HTTP_BAD_REQUEST)
@@ -44,25 +45,25 @@ class UserResource {
     @POST
     @Path("{userId}/adSize/{adSizeId}")
     @UnitOfWork
-    public User associateAdSize(@PathParam("userId") int userId, @PathParam("adSizeId") int adSizeId) {
+    public UserModel associateAdSize(@PathParam("userId") int userId, @PathParam("adSizeId") int adSizeId) {
         def user = userService.getUser(userId)
         def adSize = adSizeService.getAdSize(adSizeId)
-        return userService.associateAdSize(user, adSize)
+        return userService.associateAdSize(user, adSize).toModel()
     }
 
     @POST
     @Path("{userId}/provider/{providerId}")
     @UnitOfWork
-    public User associateProvider(@PathParam("userId") int userId, @PathParam("providerId") int providerId) {
+    public UserModel associateProvider(@PathParam("userId") int userId, @PathParam("providerId") int providerId) {
         def user = userService.getUser(userId)
         def provider = providerService.getProvider(providerId)
-        return userService.associateProvider(user, provider)
+        return userService.associateProvider(user, provider).toModel()
     }
 
     @PUT
     @UnitOfWork
-    public User createUser(User user) {
-        return userService.saveUser(user)
+    public UserModel createUser(User user) {
+        return userService.saveUser(user).toModel()
     }
 
 }

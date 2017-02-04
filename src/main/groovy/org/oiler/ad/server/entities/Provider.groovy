@@ -1,5 +1,7 @@
 package org.oiler.ad.server.entities
 
+import org.oiler.ad.server.api.ProviderModel
+
 import javax.persistence.*
 
 /**
@@ -19,4 +21,17 @@ class Provider {
     Collection<ProviderAdSize> providerAdSizes
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "provider")
     Collection<UserProvider> userProviders
+
+
+    public ProviderModel toModel(boolean includeUsers=true){
+        ProviderModel model = new ProviderModel()
+        model.providerId = providerId
+        model.providerName = providerName
+        model.url = url
+        model.adSizes = providerAdSizes.collect{it.adSize.toModel()}
+        if(includeUsers) {
+            model.users = userProviders.collect { it.user.toModel(false) }
+        }
+        return model
+    }
 }
