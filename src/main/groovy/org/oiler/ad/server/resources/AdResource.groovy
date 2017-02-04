@@ -1,13 +1,9 @@
 package org.oiler.ad.server.resources
 
-import org.oiler.ad.server.api.AdResponse
-import org.oiler.ad.server.api.AdTransaction
+import org.oiler.ad.server.entities.AdResponse
+import org.oiler.ad.server.entities.AdTransaction
 
-import javax.ws.rs.GET
-import javax.ws.rs.Path
-import javax.ws.rs.Produces
-import javax.ws.rs.QueryParam
-import javax.ws.rs.WebApplicationException
+import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
@@ -35,7 +31,7 @@ class AdResource {
     @GET
     @Path("click")
     public Response activateClick(@QueryParam("tid") String transacionId, @QueryParam("userid") Long userId) {
-        if(transacionId && userId) {
+        if (transacionId && userId) {
             return Response.ok([success: true]).build()
         } else {
             throw new WebApplicationException(

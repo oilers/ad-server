@@ -1,11 +1,24 @@
-package org.oiler.ad.server;
+package org.oiler.ad.server
 
-import io.dropwizard.Application;
-import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.Application
+import io.dropwizard.db.DataSourceFactory
+import io.dropwizard.hibernate.HibernateBundle
+import io.dropwizard.hibernate.ScanningHibernateBundle
+import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
-import org.oiler.ad.server.resources.AdResource;
+import org.oiler.ad.server.core.UserService
+import org.oiler.ad.server.db.UserDAO
+import org.oiler.ad.server.resources.AdResource
+import org.oiler.ad.server.resources.UserResource
 
 public class AdServerApplication extends Application<AdServerConfiguration> {
+    private
+    final HibernateBundle<AdServerConfiguration> hibernate = new ScanningHibernateBundle<AdServerConfiguration>("org.oiler.ad.server.entities") {
+        @Override
+        DataSourceFactory getDataSourceFactory(AdServerConfiguration configuration) {
+            return configuration.database
+        }
+    };
 
     public static void main(final String[] args) throws Exception {
         new AdServerApplication().run(args);
@@ -13,18 +26,22 @@ public class AdServerApplication extends Application<AdServerConfiguration> {
 
     @Override
     public String getName() {
-        return "adServer";
+        return "adServer"
     }
 
     @Override
     public void initialize(final Bootstrap<AdServerConfiguration> bootstrap) {
-        // TODO: application initialization
+        bootstrap.addBundle(hibernate)
     }
 
     @Override
     public void run(final AdServerConfiguration configuration,
                     final Environment environment) {
+        UserDAO userDAO = new UserDAO(hibernate.sessionFactory)
+        UserService userService = new UserService(userDAO: userDAO)
+        UserResource userResource = new UserResource(userService: userService)
         environment.jersey().register(new AdResource())
+        environment.jersey().register(userResource)
     }
 
 }

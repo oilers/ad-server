@@ -20,5 +20,9 @@ repositories {
 }
 dependencies {
     compile group: 'io.dropwizard', name: 'dropwizard-core', version:'1.0.6'
+    compile group: 'io.dropwizard', name: 'dropwizard-hibernate', version:'1.0.6'
+    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '2.23.2'
+
+    compile 'mysql:mysql-connector-java:6.0.5'
     compile 'org.codehaus.groovy:groovy:2.4.8'
 }
