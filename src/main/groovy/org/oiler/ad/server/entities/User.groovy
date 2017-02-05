@@ -6,6 +6,7 @@ import javax.persistence.*
 
 /**
  * Created by Kodi on 2/4/2017.
+ *
  */
 @Entity
 @NamedQueries([@NamedQuery(name = "org.oiler.ad.server.entities.User.findAll", query = "SELECT user from User user")])
@@ -21,14 +22,13 @@ class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     Collection<UserProvider> userProviders
 
-    UserModel toModel(boolean includeProviders = true) {
+    UserModel toModel() {
         UserModel model = new UserModel()
         model.username = username
         model.userId = userId
-        model.adSizes = userAdSizes.collect { it.adSize.toModel() }
-        if (includeProviders) {
-            model.providers = userProviders.collect { it.provider.toModel(false) }
-        }
+        model.adSizes = userAdSizes.collect { it.adSize.adSizeId }
+        model.providers = userProviders.collect { it.provider.providerId }
+
         return model
     }
 }

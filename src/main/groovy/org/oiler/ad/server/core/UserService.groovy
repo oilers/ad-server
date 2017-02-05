@@ -1,7 +1,7 @@
 package org.oiler.ad.server.core
 
-import org.oiler.ad.server.entities.*
 import org.oiler.ad.server.db.UserDAO
+import org.oiler.ad.server.entities.*
 
 /**
  * Created by Kodi on 2/4/2017.

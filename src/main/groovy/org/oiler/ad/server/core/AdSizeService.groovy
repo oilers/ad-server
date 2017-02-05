@@ -1,10 +1,11 @@
 package org.oiler.ad.server.core
 
-import org.oiler.ad.server.entities.AdSize
 import org.oiler.ad.server.db.AdSizeDAO
+import org.oiler.ad.server.entities.AdSize
 
 /**
  * Created by Kodi on 2/4/2017.
+ *
  */
 class AdSizeService {
     AdSizeDAO adSizeDAO
@@ -17,7 +18,7 @@ class AdSizeService {
         return adSizeDAO.save(adSize)
     }
 
-    Collection<AdSize> getAdSizes(){
+    Collection<AdSize> getAdSizes() {
         return adSizeDAO.findAll()
     }
 

@@ -2,8 +2,8 @@ package org.oiler.ad.server.resources
 
 import io.dropwizard.hibernate.UnitOfWork
 import org.oiler.ad.server.api.AdSizeModel
-import org.oiler.ad.server.entities.AdSize
 import org.oiler.ad.server.core.AdSizeService
+import org.oiler.ad.server.entities.AdSize
 
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
@@ -28,7 +28,7 @@ class AdSizeResource {
     @GET
     @UnitOfWork
     public Collection<AdSizeModel> getAdSizes() {
-        return adSizeService.adSizes.collect{it.toModel()}
+        return adSizeService.adSizes.collect { it.toModel() }
     }
 
     @POST

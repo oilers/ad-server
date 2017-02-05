@@ -6,6 +6,7 @@ import javax.persistence.*
 
 /**
  * Created by Kodi on 2/4/2017.
+ *
  */
 @Entity
 @NamedQueries([@NamedQuery(name = "org.oiler.ad.server.entities.Provider.findAll", query = "SELECT provider from Provider provider"),
@@ -53,15 +54,15 @@ class Provider {
     Collection<UserProvider> userProviders
 
 
-    public ProviderModel toModel(boolean includeUsers = true) {
+    public ProviderModel toModel() {
         ProviderModel model = new ProviderModel()
         model.providerId = providerId
         model.providerName = providerName
         model.url = url
-        model.adSizes = providerAdSizes.collect { it.adSize.toModel() }
-        if (includeUsers) {
-            model.users = userProviders.collect { it.user.toModel(false) }
-        }
+        model.adSizes = providerAdSizes.collect { it.adSize.adSizeId }
+
+        model.users = userProviders.collect { it.user.userId }
+
         return model
     }
 }

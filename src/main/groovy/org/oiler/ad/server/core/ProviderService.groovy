@@ -1,8 +1,8 @@
 package org.oiler.ad.server.core
 
 import org.oiler.ad.server.api.ProviderModel
-import org.oiler.ad.server.entities.*
 import org.oiler.ad.server.db.ProviderDAO
+import org.oiler.ad.server.entities.*
 
 /**
  * Created by Kodi on 2/4/2017.
@@ -28,15 +28,15 @@ class ProviderService {
         return saveProvider(provider)
     }
 
-    Collection<Provider> getProviders(){
+    Collection<Provider> getProviders() {
         return providerDAO.findAll()
     }
 
-    Collection<Provider> getProviderBySize(int width, int height){
+    Collection<Provider> getProviderBySize(int width, int height) {
         return providerDAO.findBySize(width, height)
     }
 
-    Collection<ProviderModel> getProviderBySizeAndUser(int width, int height, int userId){
+    Collection<ProviderModel> getProviderBySizeAndUser(int width, int height, int userId) {
         return providerDAO.findBySizeAndUser(width, height, userId)
     }
 

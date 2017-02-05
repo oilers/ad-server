@@ -26,19 +26,19 @@ class ProviderDAO extends AbstractDAO<Provider> {
         return persist(provider)
     }
 
-    public Collection<Provider> findAll(){
+    public Collection<Provider> findAll() {
         return list(namedQuery("org.oiler.ad.server.entities.Provider.findAll"))
     }
 
-    public Collection<Provider> findBySize(int width, int height){
+    public Collection<Provider> findBySize(int width, int height) {
         return list(namedQuery("org.oiler.ad.server.entities.Provider.findBySize").setParameter("width", width).setParameter("height", height))
     }
 
-    public Collection<ProviderModel> findBySizeAndUser(int width, int height, int userId){
+    public Collection<ProviderModel> findBySizeAndUser(int width, int height, int userId) {
         return list(namedQuery("org.oiler.ad.server.entities.Provider.findBySizeAndUser")
                 .setParameter("width", width)
                 .setParameter("height", height)
                 .setParameter("userId", userId)
-        ).collect{new ProviderModel(providerId: it[0], providerName: it[1], url: it[2])}
+        ).collect { new ProviderModel(providerId: it[0], providerName: it[1], url: it[2]) }
     }
 }

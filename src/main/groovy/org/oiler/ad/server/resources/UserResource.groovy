@@ -32,7 +32,7 @@ class UserResource {
     @GET
     @UnitOfWork
     public Collection<UserModel> getUsers() {
-        return userService.users.collect{it.toModel()}
+        return userService.users.collect { it.toModel() }
     }
 
     @POST

@@ -2,30 +2,32 @@ package org.oiler.ad.server.db
 
 import io.dropwizard.hibernate.AbstractDAO
 import org.hibernate.SessionFactory
-import org.oiler.ad.server.entities.User
+import org.oiler.ad.server.entities.Auction
 
 /**
  * Created by Kodi on 2/4/2017.
  */
-class UserDAO extends AbstractDAO<User> {
+class AuctionDAO extends AbstractDAO<Auction> {
+
     /**
      * Creates a new DAO with a given session provider.
      *
      * @param sessionFactory a session provider
      */
-    UserDAO(SessionFactory sessionFactory) {
+    AuctionDAO(SessionFactory sessionFactory) {
         super(sessionFactory)
     }
 
-    public User findById(int id) {
+
+    public Auction findById(String id) {
         return get(id)
     }
 
-    public User save(User user) {
+    public Auction save(Auction user) {
         return persist(user)
     }
 
-    public Collection<User> findAll() {
-        return list(namedQuery("org.oiler.ad.server.entities.User.findAll"))
+    public Collection<Auction> findAll() {
+        return list(namedQuery("org.oiler.ad.server.entities.Auction.findAll"))
     }
 }
