@@ -28,6 +28,6 @@ class AuctionDAO extends AbstractDAO<Auction> {
     }
 
     public Collection<Auction> findAll() {
-        return list(namedQuery("org.oiler.ad.server.entities.Auction.findAll"))
+        return list(namedQuery("org.oiler.ad.server.entities.Auction.findAll").setMaxResults(100))
     }
 }

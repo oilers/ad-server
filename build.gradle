@@ -1,4 +1,8 @@
 apply plugin: 'groovy'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+mainClassName = 'org.oiler.ad.server.AdServerApplication'
 
 group = 'org.oiler.ad.server'
 version = '1.0-SNAPSHOT'
@@ -11,10 +15,20 @@ tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 }
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+    }
+}
 
+shadowJar {
+    mergeServiceFiles()
+}
 
 repositories {
-        
      maven { url "http://repo.maven.apache.org/maven2" }
 }
 dependencies {

@@ -1,7 +1,7 @@
 server:
   applicationConnectors:
   - type: http
-    port: 8080
+    port: 80
 
 logging:
   level: INFO
@@ -14,7 +14,7 @@ database:
   # the username
   user: svc.adexchange
   # the password
-  password:
+  password: password
   # the JDBC URL
   url: jdbc:mysql://localhost:3306/ads
   # any properties specific to your JDBC driver:
@@ -31,5 +31,3 @@ database:
   maxSize: 10
   # whether or not idle connections should be validated
   checkConnectionWhileIdle: false
-
-staleTimeMillis: 5000000

@@ -11,5 +11,4 @@ class AuctionParamaters {
     String userAgent
     String domain
     String ip
-    String transactionId
 }

@@ -15,7 +15,4 @@ public class AdServerConfiguration extends Configuration {
     @Valid
     @NotNull
     JerseyClientConfiguration jerseyClient = new JerseyClientConfiguration()
-
-    @NotNull
-    long staleTimeMillis
 }

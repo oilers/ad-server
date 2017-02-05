@@ -18,7 +18,7 @@ class Auction {
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user
-    @OneToMany(mappedBy = "auction")
+    @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
     Collection<Bid> bids
     @Column(name = "winning_price")
     Double winningPrice
@@ -33,6 +33,7 @@ class Auction {
 
     AuctionModel toModel() {
         AuctionModel model = new AuctionModel()
+        model.transactionId = transactionId
         model.bids = bids.collect { it.toModel() }
         model.userid = user.userId
         model.winningPrice = winningPrice

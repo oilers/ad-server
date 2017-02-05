@@ -1,10 +1,10 @@
 package org.oiler.ad.server.resources
 
+import io.dropwizard.hibernate.UnitOfWork
 import org.oiler.ad.server.api.AuctionModel
 import org.oiler.ad.server.api.AuctionParamaters
-import org.oiler.ad.server.core.AuctionService
 import org.oiler.ad.server.api.AuctionResult
-import org.oiler.ad.server.api.ClickResult
+import org.oiler.ad.server.core.AuctionService
 
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.*
@@ -17,25 +17,23 @@ import javax.ws.rs.core.Response
  */
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
-class AdResource {
+class AuctionResource {
     AuctionService auctionService
-    long staleMilliseconds
 
     @GET
     @Path("ad")
+    @UnitOfWork
     public AuctionResult getAd(
             @QueryParam("width") Integer width,
             @QueryParam("height") Integer height, @QueryParam("userid") Integer userId, @QueryParam("url") URI url,
-            @HeaderParam("user-agent") String userAgent, @Context HttpServletRequest request) {
+            @HeaderParam("User-Agent") String userAgent, @Context HttpServletRequest request) {
         if (width && height && userId && url) {
             String ip = request.remoteAddr
             String domain = url.host
-            String transactionId = UUID.randomUUID().toString()
             AuctionResult auctionResult = auctionService.performAuction(new AuctionParamaters(
                     ip: ip,
                     domain: domain,
                     userAgent: userAgent,
-                    transactionId: transactionId,
                     width: width,
                     height: height,
                     userId: userId))
@@ -49,16 +47,11 @@ class AdResource {
 
     @GET
     @Path("click")
-    public Response activateClick(@QueryParam("tid") String transacionId, @QueryParam("userid") Long userId) {
-        if (transacionId && userId) {
-            def auction = auctionService.getAuction(transacionId)
-            if (auction.performed.time + staleMilliseconds < System.currentTimeMillis()) {
-                auction.clickResult = ClickResult.CLICK
-            } else {
-                auction.clickResult = ClickResult.STALE
-            }
-            auctionService.saveAuction(auction)
-            return Response.ok([success: true]).build()
+    @UnitOfWork
+    public Response activateClick(@QueryParam("tid") String transactionId, @QueryParam("userid") Integer userId) {
+        if (transactionId && userId) {
+            def clickResult = auctionService.registerClick(transactionId, userId)
+            return Response.ok([success: true, clickResult: clickResult]).build()
         } else {
             throw new WebApplicationException(
                     Response.status(HttpURLConnection.HTTP_BAD_REQUEST)
@@ -69,6 +62,7 @@ class AdResource {
 
     @GET
     @Path("history")
+    @UnitOfWork
     public Collection<AuctionModel> getHistory() {
         return auctionService.getAuctions().collect { it.toModel() }
 
