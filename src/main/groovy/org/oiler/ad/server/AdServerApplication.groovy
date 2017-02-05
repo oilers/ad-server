@@ -73,9 +73,9 @@ public class AdServerApplication extends Application<AdServerConfiguration> {
         UserResource userResource = new UserResource(userService: userService, adSizeService: adSizeService, providerService: providerService)
         ProviderResource providerResource = new ProviderResource(providerService: providerService, adSizeService: adSizeService, userService: userService)
         AdSizeResource adSizeResource = new AdSizeResource(adSizeService: adSizeService)
-        AuctionResource adResource = new AuctionResource(auctionService: auctionService)
+        AuctionResource auctionResource = new AuctionResource(auctionService: auctionService)
 
-        environment.jersey().register(adResource)
+        environment.jersey().register(auctionResource)
         environment.jersey().register(userResource)
         environment.jersey().register(providerResource)
         environment.jersey().register(adSizeResource)

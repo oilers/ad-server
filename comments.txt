@@ -1,0 +1,17 @@
+Questions:
+How could a user commit fraud with the current design?
+Currently there is no way too determine if a request for an ad is legitimate or not. One could hit the `/ad` endpoint as often as possible then hit the click one to register fake ads and clicks.
+In order to mitigate you could look for patterns of the same user requesting multiple ads, or a pattern of users requesting. Maybe even noticing that a small group of users is requesting ads for the same group of sites.
+You could also look at the time to click and ensure that there is a reasonable delay. No human could click a link 10ms after the ad was shown. You could also analyze the time to see if it's constant for a number of requests.
+So if the time between ad served and click is always exactly 562ms, that would be a red flag.
+
+But something as simple as rate limiting a domain may also be effective in a number of cases.
+
+
+
+
+
+
+Notes:
+I added two (2) tables to support the `click` and `history` endpoints: `auciton` and `bid`. Their sql files are checked in.
+Also the first call to the `ad` endpoint is much slower than subsequent ones. This endpoint may need to be "warmed"

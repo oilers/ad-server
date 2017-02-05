@@ -1,10 +1,14 @@
 package org.oiler.ad.server.core
 
 import groovy.util.logging.Slf4j
+import org.joda.time.DateTime
 import org.oiler.ad.server.api.AuctionParamaters
 import org.oiler.ad.server.api.BidModel
+import org.oiler.ad.server.api.ClickResult
 import org.oiler.ad.server.api.ProviderModel
 import org.oiler.ad.server.db.AuctionDAO
+import org.oiler.ad.server.entities.Auction
+import org.oiler.ad.server.entities.User
 import spock.lang.Specification
 
 import javax.ws.rs.client.Client
@@ -17,14 +21,12 @@ import java.util.concurrent.TimeUnit
  */
 @Slf4j
 class AuctionServiceSpec extends Specification {
-    def maxDurationNano = 2.0e+8
 
     def "When an auction is performed there is a winner and it is recorded"() {
         AuctionDAO auctionDAO = Mock()
         Client client = Mock()
         ProviderService providerService = Mock()
         ExecutorService executorService = Mock()
-        String uuid = UUID.randomUUID().toString()
         AuctionService auctionService = new AuctionService(auctionDAO: auctionDAO, client: client, providerService: providerService, executorService: executorService)
         AuctionParamaters paramaters = new AuctionParamaters(width: 100, height: 100, userId: 1, userAgent: "Spock Test", domain: "unittest.com", ip: "444.444.444.444")
         when:
@@ -52,6 +54,66 @@ class AuctionServiceSpec extends Specification {
         expect:
         auctionResult.html == "<p>Ad #4</p>"
         log.info("Took ${duration}")
+    }
+
+    def "registerClick should set clickResult to CLICK if clicked within the click timer"(){
+        AuctionDAO auctionDAO = Mock()
+        Client client = Mock()
+        ProviderService providerService = Mock()
+        ExecutorService executorService = Mock()
+        AuctionService auctionService = new AuctionService(auctionDAO: auctionDAO, client: client, providerService: providerService, executorService: executorService, clickTimer: 120 * 1000)
+        Auction savedAuction = null
+        def recent = new DateTime().minusSeconds(60).toDate()
+        when:
+        def result = auctionService.registerClick("spock-unit-test", 1)
+        then:
+        1 * auctionDAO.findById("spock-unit-test") >> new Auction(user: new User(userId: 1), performed: recent)
+        1 * auctionDAO.save(_) >> {auction->
+            //Not sure why this is an array here...
+            savedAuction = auction[0]
+            return savedAuction
+        }
+        expect:
+        result == ClickResult.CLICK
+        savedAuction.clickResult == result
+    }
+
+    def "registerClick should set clickResult to STALE if clicked after the click timer expires"(){
+        AuctionDAO auctionDAO = Mock()
+        Client client = Mock()
+        ProviderService providerService = Mock()
+        ExecutorService executorService = Mock()
+        AuctionService auctionService = new AuctionService(auctionDAO: auctionDAO, client: client, providerService: providerService, executorService: executorService, clickTimer: 1000)
+        Auction savedAuction = null
+        def recent = new DateTime().minusSeconds(60).toDate()
+        when:
+        def result = auctionService.registerClick("spock-unit-test", 1)
+        then:
+        1 * auctionDAO.findById("spock-unit-test") >> new Auction(user: new User(userId: 1), performed: recent)
+        1 * auctionDAO.save(_) >> {auction->
+            //Not sure why this is an array here...
+            savedAuction = auction[0]
+            return savedAuction
+        }
+        expect:
+        result == ClickResult.STALE
+        savedAuction.clickResult == result
+    }
+
+
+    def "registerClick should throw an exception if user ids do not match"(){
+        AuctionDAO auctionDAO = Mock()
+        Client client = Mock()
+        ProviderService providerService = Mock()
+        ExecutorService executorService = Mock()
+        AuctionService auctionService = new AuctionService(auctionDAO: auctionDAO, client: client, providerService: providerService, executorService: executorService, clickTimer: 1000)
+        def recent = new DateTime().minusSeconds(60).toDate()
+        when:
+        def result = auctionService.registerClick("spock-unit-test", 1)
+        then:
+        1 * auctionDAO.findById("spock-unit-test") >> new Auction(user: new User(userId: 22), performed: recent)
+        thrown IllegalArgumentException
+
     }
 
 }
