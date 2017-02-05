@@ -8,6 +8,7 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.ManyToOne
 import javax.persistence.OneToOne
 import javax.persistence.PrimaryKeyJoinColumn
 
@@ -23,6 +24,9 @@ class Bid {
     @OneToOne
     @PrimaryKeyJoinColumn
     Provider provider
+    @ManyToOne
+    @PrimaryKeyJoinColumn
+    Auction auction
     @Column(name = "ad_html")
     String adHtml
     @Column(name = "bid_price")

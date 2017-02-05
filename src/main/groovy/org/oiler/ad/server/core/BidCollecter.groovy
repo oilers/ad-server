@@ -17,8 +17,12 @@ class BidCollecter implements Callable<BidModel> {
 
     @Override
     BidModel call() throws Exception {
-        def bid = target.request().post(Entity.json(bidRequest), BidModel)
-        bid.providerId = providerId
-        return bid
+        try {
+            def bid = target.request().post(Entity.json(bidRequest), BidModel)
+            bid.providerId = providerId
+            return bid
+        } catch(Exception ex) {
+            return AuctionService.EMPTY_BID
+        }
     }
 }
